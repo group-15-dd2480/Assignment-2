@@ -1,6 +1,7 @@
 package org.dd2480;
 
 import org.dd2480.handlers.RootHandler;
+import org.dd2480.handlers.WebhookHandler;
 
 import io.javalin.Javalin;
 
@@ -25,6 +26,7 @@ public class App {
      */
     private void buildRoutes() {
         this.app.get("/", new RootHandler());
+        this.app.post("/webhook", new WebhookHandler());
     }
 
     /**
