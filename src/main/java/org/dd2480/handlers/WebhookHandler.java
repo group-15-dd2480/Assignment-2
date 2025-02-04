@@ -91,6 +91,7 @@ public class WebhookHandler implements Handler {
      * @param ctx The Javalin context for the request
      */
     private void handlePush(Context ctx) {
+        // TODO: Handle push event properly once build system is implemented
         ctx.result("push");
         ctx.status(200);
     }
