@@ -19,4 +19,17 @@ public class BuildResult {
     public Instant startTime;
     public Instant endTime;
 
+    public BuildResult(String repositoryOwner, String repositoryName, String branch, String commitHash, BuildStatus status, List<String> logs, Instant startTime, Instant endTime) {
+        this.repositoryOwner = repositoryOwner;
+        this.repositoryName = repositoryName;
+        this.branch = branch;
+        this.commitHash = commitHash;
+        this.status = status;
+        this.logs = logs;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+    public BuildResult(){
+        this(null,null,null,null,null,null,null,null);
+    }
 }
