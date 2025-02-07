@@ -1,6 +1,11 @@
 package org.dd2480.builder;
 
+import java.io.File;
+import java.nio.file.Paths;
+
 import org.dd2480.Commit;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -76,16 +81,40 @@ public class Builder {
     }
 
     /**
-     * Fetch project files from a remote repository, for a specific branch and
-     * commit.
+     * Fetch project files from a remote repository for a specific branch and
+     * commit. Files are put in a temporary folder and named after the commit hash.
      *
-     * Save locally in a temp folder and return the absolute path to that
-     * folder.
-     *
-     * Name the folder something appropriate and unique, like the commit hash.
+     * @param commit A commit object
+     * @return The absolute path for the project files, or an empty string if
+     *         something went wrong
      */
     public static String fetchProjectFiles(Commit commit) {
-        return "Project files fetched";
+
+        String repoUrl = "https://github.com/" + commit.repositoryOwner + "/" + commit.repositoryName + ".git";
+
+        // Absolute path to project file location
+        String filePath = Paths.get("temp", commit.hash).toAbsolutePath().toString();
+
+        /*
+         * Clones the directory and switches to correct branch and commit.
+         * 
+         * Is a try-with-resource block that automatically runs git.close() whenever the
+         * block finishes, even if an exception happens. This is important, otherwise
+         * it might cause issues when deleting the repo files.
+         */
+        try (Git git = Git
+                .cloneRepository()
+                .setURI(repoUrl)
+                .setDirectory(new File(filePath))
+                .call()) {
+            // Checkout specific branch and commit
+            git.checkout().setName(commit.branch).call();
+            git.checkout().setName(commit.hash).call();
+        } catch (Exception e) { // Incorrect commit info or other issue
+            return "";
+        }
+
+        return filePath;
     }
 
     /**

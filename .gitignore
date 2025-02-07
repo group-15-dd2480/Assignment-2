@@ -41,3 +41,6 @@ build/
 mvnw
 mvnw.cmd
 .mvn/**
+
+### GitHub Data ###
+/temp/
