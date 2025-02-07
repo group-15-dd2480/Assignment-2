@@ -81,8 +81,8 @@ public class Builder {
     }
 
     /**
-     * Fetch project files from a remote repository, for a specific branch and
-     * commit. Files are put in a temp folder and named after the commit hash.
+     * Fetch project files from a remote repository for a specific branch and
+     * commit. Files are put in a temporary folder and named after the commit hash.
      *
      * @param commit A commit object
      * @return The absolute path for the project files, or an empty string if
@@ -95,18 +95,22 @@ public class Builder {
         // Absolute path to project file location
         String filePath = Paths.get("temp", commit.hash).toAbsolutePath().toString();
 
-        try {
-            // Clone the repo
-            Git git = Git.cloneRepository()
-                    .setURI(repoUrl)
-                    .setDirectory(new File(filePath))
-                    .call();
-
+        /*
+         * Clones the directory and switches to correct branch and commit.
+         * 
+         * Is a try-with-resource block that automatically runs git.close() whenever the
+         * block finishes, even if an exception happens. This is important, otherwise
+         * it might cause issues when deleting the repo files.
+         */
+        try (Git git = Git
+                .cloneRepository()
+                .setURI(repoUrl)
+                .setDirectory(new File(filePath))
+                .call()) {
             // Checkout specific branch and commit
             git.checkout().setName(commit.branch).call();
             git.checkout().setName(commit.hash).call();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
+        } catch (Exception e) { // Incorrect commit info or other issue
             return "";
         }
 
