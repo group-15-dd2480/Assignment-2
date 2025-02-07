@@ -11,7 +11,9 @@ public class StaticHostTest {
     public void get_missing_returns_404() {
         Javalin app = new App("localhost", 9876).app;
         JavalinTest.test(app, (server, client) -> {
+            // Empty directory should return 404
             assertEquals(404, client.get("/static").code());
+            // Missing file should return 404
             assertEquals(404, client.get("/static/missing_file.txt").code());
         });
     }
