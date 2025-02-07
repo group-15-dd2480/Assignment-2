@@ -17,7 +17,12 @@ public class App {
     public App(String bindIp, int port) {
         this.bindIp = bindIp;
         this.port = port;
-        this.app = Javalin.create();
+        this.app = Javalin.create(config -> {
+            config.staticFiles.add(staticConfig -> {
+                staticConfig.directory = "/static";
+                staticConfig.hostedPath = "/static";
+            });
+        });
         this.buildRoutes();
     }
 
