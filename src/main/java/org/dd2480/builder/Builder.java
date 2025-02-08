@@ -1,25 +1,25 @@
 package org.dd2480.builder;
 
-import java.io.File;
+import java.io.*;
 import java.nio.file.Paths;
 
 import org.dd2480.Commit;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.slf4j.Logger;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Builder {
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(Builder.class);
 
     /**
      * Build a project from the repository on a specific commit.
+     * @param commit A commit object
      *
-     * Save the build result.
      */
     public static void buildProject(Commit commit) {
         Instant startTime = Instant.now();
@@ -119,16 +119,41 @@ public class Builder {
 
     /**
      * Save the build result so that it can be accessed at a later date.
+     * @param result the BuildResult object from buildProject
+     *
      */
     public static void saveResult(BuildResult result) {
-
+        try {
+            FileOutputStream stream = new FileOutputStream(result.commitHash + ".dat");
+            ObjectOutputStream out = new ObjectOutputStream(stream);
+            out.writeObject(result);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            log.warn("Failed create file for build result: " + e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
     /**
      * Get the build result for a specific commit.
+     * @param commitHash a commit hash
+     *
+     * @return the result of the build
      */
     public static BuildResult getResult(String commitHash) {
-        return new BuildResult();
+        try {
+            FileInputStream stream = new FileInputStream(commitHash + ".dat");
+            ObjectInputStream in = new ObjectInputStream(stream);
+            BuildResult result = (BuildResult) in.readObject();
+            in.close();
+            return result;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-
 }
