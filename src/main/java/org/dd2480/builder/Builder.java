@@ -1,15 +1,13 @@
 package org.dd2480.builder;
 
-import java.io.File;
+import java.io.*;
 import java.nio.file.Paths;
 
 import org.dd2480.Commit;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +16,8 @@ public class Builder {
 
     /**
      * Build a project from the repository on a specific commit.
+     * @param commit A commit object
      *
-     * Save the build result.
      */
     public static void buildProject(Commit commit) {
         Instant startTime = Instant.now();
@@ -119,9 +117,30 @@ public class Builder {
 
     /**
      * Save the build result so that it can be accessed at a later date.
+     *
+     * @param result the BuildResult to be saved
      */
     public static void saveResult(BuildResult result) {
+        String fileName = result.commitHash + ".txt";
+        File file = new File(fileName);
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write("Repository Owner: " + result.repositoryOwner + "\n");
+            writer.write("Repository Name: " + result.repositoryName + "\n");
+            writer.write("Branch: " + result.branch + "\n");
+            writer.write("Commit Hash: " + result.commitHash + "\n");
+            writer.write("Status: " + result.status + "\n");
+            writer.write("Start Time: " + result.startTime + "\n");
+            writer.write("End Time: " + result.endTime + "\n");
+            writer.write("Logs:\n");
 
+            for (String log : result.logs) {
+                writer.write("  " + log + "\n");
+            }
+
+            System.out.println("Build result saved: " + fileName);
+        } catch (IOException e) {
+            System.err.println("Failed to save build result: " + e.getMessage());
+        }
     }
 
     /**
