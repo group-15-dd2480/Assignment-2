@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import org.dd2480.Commit;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.time.Instant;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Builder {
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(Builder.class);
 
     /**
      * Build a project from the repository on a specific commit.
@@ -117,37 +119,41 @@ public class Builder {
 
     /**
      * Save the build result so that it can be accessed at a later date.
+     * @param result the BuildResult object from buildProject
      *
-     * @param result the BuildResult to be saved
      */
     public static void saveResult(BuildResult result) {
-        String fileName = result.commitHash + ".txt";
-        File file = new File(fileName);
-        try (FileWriter writer = new FileWriter(file)) {
-            writer.write("Repository Owner: " + result.repositoryOwner + "\n");
-            writer.write("Repository Name: " + result.repositoryName + "\n");
-            writer.write("Branch: " + result.branch + "\n");
-            writer.write("Commit Hash: " + result.commitHash + "\n");
-            writer.write("Status: " + result.status + "\n");
-            writer.write("Start Time: " + result.startTime + "\n");
-            writer.write("End Time: " + result.endTime + "\n");
-            writer.write("Logs:\n");
-
-            for (String log : result.logs) {
-                writer.write("  " + log + "\n");
-            }
-
-            System.out.println("Build result saved: " + fileName);
+        try {
+            FileOutputStream stream = new FileOutputStream(result.commitHash + ".dat");
+            ObjectOutputStream out = new ObjectOutputStream(stream);
+            out.writeObject(result);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            log.warn("Failed create file for build result: " + e.getMessage());
         } catch (IOException e) {
-            System.err.println("Failed to save build result: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
     /**
      * Get the build result for a specific commit.
+     * @param commitHash a commit hash
+     *
+     * @return the result of the build
      */
     public static BuildResult getResult(String commitHash) {
-        return new BuildResult();
+        try {
+            FileInputStream stream = new FileInputStream(commitHash + ".dat");
+            ObjectInputStream in = new ObjectInputStream(stream);
+            BuildResult result = (BuildResult) in.readObject();
+            in.close();
+            return result;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-
 }

@@ -2,13 +2,14 @@ package org.dd2480.builder;
 
 import org.dd2480.Commit;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
 /**
  * Encapsulates the result of a single build.
  */
-public class BuildResult {
+public class BuildResult implements Serializable {
 
     public String repositoryOwner;
     public String repositoryName;
