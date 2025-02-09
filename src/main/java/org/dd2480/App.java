@@ -5,6 +5,7 @@ import org.dd2480.handlers.RootHandler;
 import org.dd2480.handlers.WebhookHandler;
 
 import io.javalin.Javalin;
+import io.javalin.rendering.template.JavalinFreemarker;
 
 /**
  * Container class for the http server.
@@ -35,6 +36,10 @@ public class App {
                 // The path to serve files from
                 staticConfig.hostedPath = "/static";
             });
+
+            // Configures server-side-rendering using the freemarker templating engine
+            // Any templates in src/main/resources/templates can be used for rendering
+            config.fileRenderer(new JavalinFreemarker());
         });
         this.buildRoutes();
     }
