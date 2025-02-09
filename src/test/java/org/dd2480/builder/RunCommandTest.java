@@ -5,39 +5,49 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.dd2480.builder.Builder.runCommand;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RunCommandTest {
 
     @Test
     void shouldReturnFalse_whenInvalidDirectory() {
+        Builder builder = new Builder();
+
         List<String> output = new ArrayList<>();
-        boolean result = runCommand("echo Test", "invalidDir", output);
+        boolean result = builder.runCommand("echo Test", "invalidDir", output);
 
         assertFalse(result, "Command should fail due to invalid directory");
         assertFalse(output.isEmpty(), "Output should contain error messages");
     }
+
     @Test
-    void shouldReturnFalse_whenNullInput(){
+    void shouldReturnFalse_whenNullInput() {
+        Builder builder = new Builder();
+
         List<String> output = new ArrayList<>();
-        boolean result = runCommand(null, ".", output);
+        boolean result = builder.runCommand(null, ".", output);
 
         assertFalse(result, "Command should fail due to null input");
         assertFalse(output.isEmpty(), "Output should contain exception message");
     }
+
     @Test
-    void shouldReturnFalse_whenNonExistentCommandGiven(){
+    void shouldReturnFalse_whenNonExistentCommandGiven() {
+        Builder builder = new Builder();
+
         List<String> output = new ArrayList<>();
-        boolean result = runCommand("nonexistentcommand", ".", output);
+        boolean result = builder.runCommand("nonexistentcommand", ".", output);
 
         assertFalse(result, "Command should fail");
         assertFalse(output.isEmpty(), "Output should contain error messages");
     }
+
     @Test
-    void shouldReturnTrue_whenRightCommandGiven(){
+    void shouldReturnTrue_whenRightCommandGiven() {
+        Builder builder = new Builder();
+
         List<String> output = new ArrayList<>();
-        boolean result = runCommand("echo Hello, World!", ".", output);
+        boolean result = builder.runCommand("echo Hello, World!", ".", output);
 
         assertTrue(result, "Command should execute successfully");
         assertFalse(output.isEmpty(), "Output should not be empty");

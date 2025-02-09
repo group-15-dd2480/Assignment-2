@@ -1,5 +1,6 @@
 package org.dd2480;
 
+import org.dd2480.builder.Builder;
 import org.dd2480.handlers.RootHandler;
 import org.dd2480.handlers.WebhookHandler;
 
@@ -13,6 +14,8 @@ public class App {
     public final Javalin app;
     private final String bindIp;
     private final int port;
+
+    public Builder builder = new Builder();
 
     /**
      * Create a new instance of the application.
