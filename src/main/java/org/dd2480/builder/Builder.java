@@ -21,7 +21,7 @@ public class Builder {
      * @param commit A commit object
      *
      */
-    public static void buildProject(Commit commit) {
+    public void buildProject(Commit commit) {
         Instant startTime = Instant.now();
 
         // First fetch project files
@@ -57,7 +57,8 @@ public class Builder {
         BuildResult result = new BuildResult(commit, status, allLogs, startTime, endTime);
         saveResult(result);
     }
-    public static boolean runCommand(String command, String workingDir, List<String> output) {
+
+    public boolean runCommand(String command, String workingDir, List<String> output) {
         try {
             ProcessBuilder pb = new ProcessBuilder(command.split(" "));
             pb.directory(new File(workingDir));
@@ -88,7 +89,7 @@ public class Builder {
      * @return The absolute path for the project files, or an empty string if
      *         something went wrong
      */
-    public static String fetchProjectFiles(Commit commit) {
+    public String fetchProjectFiles(Commit commit) {
 
         String repoUrl = "https://github.com/" + commit.repositoryOwner + "/" + commit.repositoryName + ".git";
 
@@ -122,7 +123,7 @@ public class Builder {
      * @param result the BuildResult object from buildProject
      *
      */
-    public static void saveResult(BuildResult result) {
+    public void saveResult(BuildResult result) {
         try {
             FileOutputStream stream = new FileOutputStream(result.commitHash + ".dat");
             ObjectOutputStream out = new ObjectOutputStream(stream);
@@ -141,7 +142,7 @@ public class Builder {
      *
      * @return the result of the build
      */
-    public static BuildResult getResult(String commitHash) {
+    public BuildResult getResult(String commitHash) {
         try {
             FileInputStream stream = new FileInputStream(commitHash + ".dat");
             ObjectInputStream in = new ObjectInputStream(stream);
