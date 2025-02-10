@@ -133,6 +133,8 @@ public class Builder {
         try (FileOutputStream stream = new FileOutputStream(file);
              ObjectOutputStream out = new ObjectOutputStream(stream)) {
             out.writeObject(result);
+            out.flush();
+            out.close();
         } catch (FileNotFoundException e) {
             log.warn("Failed to create file for build result: " + e.getMessage());
         } catch (IOException e) {
