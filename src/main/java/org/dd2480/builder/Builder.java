@@ -123,16 +123,21 @@ public class Builder {
      *
      */
     public void saveResult(BuildResult result) {
-        try {
-            FileOutputStream stream = new FileOutputStream(result.commitHash + ".dat");
-            ObjectOutputStream out = new ObjectOutputStream(stream);
+        File directory = new File("buildResults");
+        // Create directory if it doesn't exist
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        File file = new File(directory, result.commitHash + ".dat");
+        try (FileOutputStream stream = new FileOutputStream(file);
+             ObjectOutputStream out = new ObjectOutputStream(stream)) {
             out.writeObject(result);
             out.flush();
             out.close();
         } catch (FileNotFoundException e) {
-            log.warn("Failed create file for build result: " + e.getMessage());
+            log.warn("Failed to create file for build result: " + e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Failed to save build result: " + e.getMessage(), e);
         }
     }
     /**
