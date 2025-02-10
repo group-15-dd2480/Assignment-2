@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 
 import org.dd2480.Commit;
-import org.dd2480.GithubStatus;
 import org.dd2480.builder.Builder;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 
 class FetchProjectFilesTest {
-    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(GithubStatus.class);
-    
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(FetchProjectFilesTest.class);
+
     @Test
     void canFetchProjectFiles_givenCorrectRepoInformation() {
         Builder builder = new Builder();
