@@ -10,8 +10,11 @@ import org.dd2480.builder.Builder;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
 
 class FetchProjectFilesTest {
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(FetchProjectFilesTest.class);
+
     @Test
     void canFetchProjectFiles_givenCorrectRepoInformation() {
         Builder builder = new Builder();
@@ -85,9 +88,9 @@ class FetchProjectFilesTest {
                     .map(Path::toFile) // We want a file, not a path
                     .forEach(file -> {
                         if (!file.isDirectory() && !file.setWritable(true)) // Fixes eventual permission errors
-                            System.err.println("Permission could not be changed for: " + file.toString());
+                            logger.error("Permission could not be changed for: " + file.toString());
                         if (!file.delete())
-                            System.err.println("File could not be deleted: " + file.toString());
+                            logger.error("File could not be deleted: " + file.toString());
                     });
         }
     }

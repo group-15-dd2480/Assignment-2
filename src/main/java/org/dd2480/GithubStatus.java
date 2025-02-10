@@ -9,10 +9,14 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import org.slf4j.Logger;
 
 import org.dd2480.builder.BuildStatus;
 
 public class GithubStatus {
+
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(GithubStatus.class);
+
     /**
      * Updates the status of a commit using the GitHub Status API.
      *
@@ -61,7 +65,7 @@ public class GithubStatus {
             os.write(input, 0, input.length);
 
         } catch (IOException e) {
-            System.err.println("Error writing to connection output stream: " + e.getMessage());
+            logger.error("Error writing to connection output stream: " + e.getMessage());
         }
 
         int responseCode = connection.getResponseCode();
@@ -76,10 +80,10 @@ public class GithubStatus {
                     while ((line = reader.readLine()) != null) {
                         response.append(line);
                     }
-                    System.err.println("GitHub API Error Response: " + response.toString());
+                    logger.error("GitHub API Error Response: " + response.toString());
                 }
             } else {
-                System.err.println("No error stream available.");
+                logger.error("No error stream available.");
             }
             throw new RuntimeException("Failed to update status: HTTP " + responseCode);
         } else {
@@ -91,7 +95,7 @@ public class GithubStatus {
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
                 }
-                System.out.println("GitHub API Success Response: " + response.toString());
+                logger.info("GitHub API Success Response: " + response.toString());
             }
         }
     }

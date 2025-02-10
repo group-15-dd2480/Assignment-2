@@ -8,7 +8,6 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 
-import java.io.File;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ public class Builder {
         // First fetch project files
         String projectPath = fetchProjectFiles(commit);
         if (projectPath == null) {
-            System.out.println("Failed to fetch the project files for commit: " + commit.hash);
+            log.info("Failed to fetch the project files for commit: " + commit.hash);
             BuildResult result = new BuildResult(commit, BuildStatus.ERROR, List.of("Failed to fetch project files"), startTime, Instant.now());
             saveResult(result);
             return;
