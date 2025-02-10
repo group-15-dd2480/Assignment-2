@@ -1,6 +1,7 @@
 package org.dd2480;
 
 import org.dd2480.builder.Builder;
+import org.dd2480.handlers.BuildInfoHandler;
 import org.dd2480.handlers.RootHandler;
 import org.dd2480.handlers.WebhookHandler;
 
@@ -50,6 +51,7 @@ public class App {
     private void buildRoutes() {
         this.app.get("/", new RootHandler());
         this.app.post("/webhook", new WebhookHandler());
+        this.app.get("/builds/{commitHash}", new BuildInfoHandler());
     }
 
     /**
