@@ -1,6 +1,7 @@
 package org.dd2480;
 
 import org.dd2480.builder.Builder;
+import org.dd2480.handlers.BuildInfoHandler;
 import org.dd2480.handlers.RootHandler;
 import org.dd2480.handlers.WebhookHandler;
 
@@ -16,7 +17,11 @@ public class App {
     private final String bindIp;
     private final int port;
 
-    public Builder builder = new Builder();
+    public Builder builder;
+
+    public App(String bindIp, int port) {
+        this("localhost", 8080, new Builder());
+    }
 
     /**
      * Create a new instance of the application.
@@ -24,7 +29,7 @@ public class App {
      * @param bindIp The ip to bind the server to.
      * @param port   The port to bind the server to.
      */
-    public App(String bindIp, int port) {
+    public App(String bindIp, int port, Builder builder) {
         this.bindIp = bindIp;
         this.port = port;
         this.app = Javalin.create(config -> {
@@ -41,6 +46,7 @@ public class App {
             // Any templates in src/main/resources/templates can be used for rendering
             config.fileRenderer(new JavalinFreemarker());
         });
+        this.builder = builder;
         this.buildRoutes();
     }
 
@@ -50,6 +56,7 @@ public class App {
     private void buildRoutes() {
         this.app.get("/", new RootHandler());
         this.app.post("/webhook", new WebhookHandler());
+        this.app.get("/builds/{commitHash}", new BuildInfoHandler(this.builder));
     }
 
     /**
