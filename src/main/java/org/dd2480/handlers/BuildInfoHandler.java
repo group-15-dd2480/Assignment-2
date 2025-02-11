@@ -1,6 +1,8 @@
 package org.dd2480.handlers;
 
-import java.util.ArrayList;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,12 +17,17 @@ import io.javalin.http.Handler;
  */
 public class BuildInfoHandler implements Handler {
 
+    private Builder builder;
+
+    public BuildInfoHandler(Builder builder) {
+        this.builder = builder;
+    }
+
     @Override
     public void handle(Context ctx) {
         String commitHash = ctx.pathParam("commitHash");
-        Builder builder = new Builder();
         BuildResult build = builder.getResult(commitHash);
-        
+
         if (build == null) {
             ctx.status(404); // Build not found
         } else {
@@ -37,9 +44,15 @@ public class BuildInfoHandler implements Handler {
                 case ERROR -> map.put("statusStyle", "status-error");
             }
             map.put("branch", build.branch);
-            map.put("date", build.endTime.toString());
             map.put("logs", build.logs);
+            
+            // Format time to look presentable before putting it in the map
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            ZonedDateTime zonedDateTime = build.endTime.atZone(ZoneId.systemDefault());
+            String formattedDateTime = zonedDateTime.format(formatter);
+            map.put("date", formattedDateTime);
 
+            // Render template with variables placed in map
             ctx.render("/templates/buildInfo.ftl", Map.of("build", map));
         }
     }

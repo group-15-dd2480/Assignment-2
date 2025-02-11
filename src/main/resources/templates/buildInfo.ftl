@@ -74,12 +74,15 @@
                     <p>${build.repository}</p>
                     <p>${build.branch}</p>
                 </span>
-                <p>${build.message}</p>
-                <pre>
-                <#list logs as log>
-                    ${log}<br>
-                </#list>
-                </pre>
+                <#if build.logs?size == 0>
+                    <p>No logs available.</p>
+                <#else>
+                    <pre>
+                        <#list build.logs as log>
+                            ${log}
+                        </#list>
+                    </pre>
+                </#if>
             </span>
         </li>
     </ul>
