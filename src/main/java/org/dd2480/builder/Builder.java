@@ -161,4 +161,20 @@ public class Builder {
             return null;
         }
     }
+    public List<BuildResult> listAllBuilds(){
+        List<BuildResult> results = new ArrayList<>();
+        File directory = new File("buildResults");
+        File[] files = directory.listFiles((dir, name) -> name.endsWith(".dat"));
+        if (files == null) return results;
+        // Deserialize each file
+        for (File file : files) {
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+                BuildResult result = (BuildResult) in.readObject();
+                results.add(result);
+            } catch (IOException | ClassNotFoundException e) {
+                System.err.println("Failed to read build result from " + file.getName() + ": " + e.getMessage());
+            }
+        }
+        return results;
+    }
 }
