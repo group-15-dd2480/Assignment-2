@@ -1,8 +1,8 @@
 # Assignment 2 - CI Server - Group 15
-The purpose of the project is creating a small continous integration (CI) server 
-for github repositories. The CI server will only contain the core features of CI integration, that being building, testing, and reporting results.
 
-A webhook is configured to send push event notifications to our server, which triggers a build of the associated repository. The code is checked using `mvn test` and the results are reported using the Github Status API.
+The purpose of the project is creating a small continous integration (CI) server for github repositories. The CI server will only contain the core features of CI integration, that being building, testing, and reporting results.
+
+A webhook is configured to send push event notifications to our server, which triggers a build of the associated repository. The code is checked using `mvn test` and `mvn package`, the results are reported using the Github Status API.
 
 ## How to Build and Test
 
@@ -23,18 +23,22 @@ The code can be found in `/src/main/java/org/dd2480`, with resources in `/src/ma
 ## Statement of Contributions
 
 #### Francis
+
 - Implemented HTTP server and static file host.
 - Implemented webhook endpoint.
 - Implemented github actions to test code.
- 
+
 #### David
+
 - Implemented handlers for listing all builds and listing individual builds."
 - Implemented fetching of project files.
- 
+
 #### Markus
+
 - Implemented Github Status API.
 - Wrote README file.
 
 #### Ebrar
+
 - Implemented Build project and save build status.
 - Implemented Build results.
