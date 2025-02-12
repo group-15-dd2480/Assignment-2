@@ -117,6 +117,11 @@ public class Builder {
 
         // Absolute path to project file location
         String filePath = Paths.get("temp", commit.hash).toAbsolutePath().toString();
+        File file = new File(filePath);
+        if (file.listFiles() != null) {
+            // Files for commit already exist
+            return filePath;
+        }
 
         /*
          * Clones the directory and switches to correct branch and commit.
