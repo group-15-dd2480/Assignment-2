@@ -33,7 +33,7 @@ public class GithubStatusTest {
         Commit commit = new Commit("Name", "Assignment-2", "validsha", "Commit message", "main");
         GithubStatus status = new GithubStatus();
         // Temporarily remove the token
-        System.clearProperty("GITHUB_TOKEN");
+        status.token = null;
 
         assertThrows(IllegalStateException.class, () -> {
             status.setCommitStatus(commit, BuildStatus.SUCCESS, "Build passed!", "https://example.com");
