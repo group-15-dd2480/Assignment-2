@@ -21,6 +21,7 @@ import org.dd2480.builder.BuildStatus;
 public class GithubStatus {
 
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(GithubStatus.class);
+    public String token = System.getenv("GITHUB_TOKEN");
 
     /**
      * Updates the status of a commit using the GitHub Status API.
@@ -35,10 +36,8 @@ public class GithubStatus {
      *                               missing.
      * @throws RuntimeException      If the API request fails.
      */
-    public static void setCommitStatus(Commit commit, BuildStatus status, String description, String targetUrl)
+    public void setCommitStatus(Commit commit, BuildStatus status, String description, String targetUrl)
             throws IOException {
-        // Get the GitHub token from the environment
-        String token = System.getenv("GITHUB_TOKEN");
 
         if (token == null || token.isEmpty()) {
             throw new IllegalStateException("GitHub token is missing. Set the GITHUB_TOKEN environment variable.");
