@@ -20,21 +20,23 @@ public class GithubStatusTest {
         String targetUrl = "https://example.com/build-details";
 
         Commit commit = new Commit(owner, repo, commitSha, "Commit message", "main");
+        GithubStatus status = new GithubStatus();
+
         // Call the method to update the commit status
         assertThrows(RuntimeException.class, () -> {
-            GithubStatus.setCommitStatus(commit, state, description, targetUrl);
+            status.setCommitStatus(commit, state, description, targetUrl);
         });
     }
 
     @Test
     public void shouldThrowException_WhenTokenIsMissing() {
         Commit commit = new Commit("Name", "Assignment-2", "validsha", "Commit message", "main");
-
+        GithubStatus status = new GithubStatus();
         // Temporarily remove the token
         System.clearProperty("GITHUB_TOKEN");
 
         assertThrows(IllegalStateException.class, () -> {
-            GithubStatus.setCommitStatus(commit, BuildStatus.SUCCESS, "Build passed!", "https://example.com");
+            status.setCommitStatus(commit, BuildStatus.SUCCESS, "Build passed!", "https://example.com");
         });
 
     }
