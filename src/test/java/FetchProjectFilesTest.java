@@ -21,7 +21,7 @@ class FetchProjectFilesTest {
         Builder builder = new Builder();
 
         String hash = "a905432a9aa118e218bc15d1dacf87e939c88f39";
-        Commit commit = new Commit("group-15-dd2480", "Assignment-2", hash, null, "main");
+        Commit commit = new Commit("group-15-dd2480", "Assignment-2", hash, null, null);
         String path = builder.fetchProjectFiles(commit);
         String expectedPath = Paths.get("temp", hash).toAbsolutePath().toString();
 
@@ -42,7 +42,7 @@ class FetchProjectFilesTest {
         }
 
         String hash = "a905432a9aa118e218bc15d1dacf87e939c88f39";
-        Commit commit = new Commit("group-15-dd2480", "Assignment-2", hash, null, "main");
+        Commit commit = new Commit("group-15-dd2480", "Assignment-2", hash, null, null);
         String path = builder.fetchProjectFiles(commit);
         String expectedPath = Paths.get("temp", hash).toAbsolutePath().toString();
 
@@ -53,21 +53,10 @@ class FetchProjectFilesTest {
     void cannotFetchProjectFiles_givenIncorrectCommitHash() {
         Builder builder = new Builder();
 
-        Commit commit = new Commit("group-15-dd2480", "Assignment-2", "incorrectHash", null, "main");
+        Commit commit = new Commit("group-15-dd2480", "Assignment-2", "incorrectHash", null, null);
         String path = builder.fetchProjectFiles(commit);
 
         assertEquals("", path, "Path should be empty if hash is invalid");
-    }
-
-    @Test
-    void cannotFetchProjectFiles_givenIncorrectBranch() {
-        Builder builder = new Builder();
-
-        Commit commit = new Commit("group-15-dd2480", "Assignment-2", "a905432a9aa118e218bc15d1dacf87e939c88f39", null,
-                "incorrectBranch");
-        String path = builder.fetchProjectFiles(commit);
-
-        assertEquals("", path, "Path should be empty if branch is invalid");
     }
 
     @Test
@@ -75,8 +64,7 @@ class FetchProjectFilesTest {
         Builder builder = new Builder();
 
         Commit commit = new Commit("group-15-dd2480", "incorrectRepoName", "a905432a9aa118e218bc15d1dacf87e939c88f39",
-                null,
-                "main");
+                null, null);
         String path = builder.fetchProjectFiles(commit);
 
         assertEquals("", path, "Path should be empty if repository name is invalid");
@@ -88,7 +76,7 @@ class FetchProjectFilesTest {
 
         Commit commit = new Commit("incorrectRepoOwner", "Assignment-2", "a905432a9aa118e218bc15d1dacf87e939c88f39",
                 null,
-                "main");
+                null);
         String path = builder.fetchProjectFiles(commit);
 
         assertEquals("", path, "Path should be empty if repository owner is invalid");

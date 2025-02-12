@@ -135,8 +135,7 @@ public class Builder {
                 .setURI(repoUrl)
                 .setDirectory(new File(filePath))
                 .call()) {
-            // Checkout specific branch and commit
-            git.checkout().setName(commit.branch).call();
+            // Checkout specific commit
             git.checkout().setName(commit.hash).call();
         } catch (Exception e) { // Incorrect commit info or other issue
             return "";
