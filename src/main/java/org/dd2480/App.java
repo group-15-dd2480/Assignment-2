@@ -27,7 +27,7 @@ public class App {
      * @param port   The port number to bind the server to.
      */
     public App(String bindIp, int port) {
-        this("localhost", 8080, new Builder());
+        this(bindIp, port, new Builder());
     }
 
     /**
