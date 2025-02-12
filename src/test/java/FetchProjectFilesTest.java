@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +19,27 @@ class FetchProjectFilesTest {
     @Test
     void canFetchProjectFiles_givenCorrectRepoInformation() {
         Builder builder = new Builder();
+
+        String hash = "a905432a9aa118e218bc15d1dacf87e939c88f39";
+        Commit commit = new Commit("group-15-dd2480", "Assignment-2", hash, null, "main");
+        String path = builder.fetchProjectFiles(commit);
+        String expectedPath = Paths.get("temp", hash).toAbsolutePath().toString();
+
+        assertEquals(expectedPath, path, "Path is incorrect");
+    }
+
+    @Test
+    void canFetchProjectFiles_givenCorrectRepoInformationAndFolderExists() {
+        Builder builder = new Builder();
+
+        File dir = new File("./temp/a905432a9aa118e218bc15d1dacf87e939c88f39");
+        dir.mkdirs();
+        File file = new File("./temp/a905432a9aa118e218bc15d1dacf87e939c88f39/test.txt");
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         String hash = "a905432a9aa118e218bc15d1dacf87e939c88f39";
         Commit commit = new Commit("group-15-dd2480", "Assignment-2", hash, null, "main");
