@@ -16,6 +16,10 @@ Maven version: 3.9.9
 
 Java version: 21.0.2
 
+## Javadocs
+
+To generate javadocs, run `mvn javadoc:javadoc`. The results can be found in `target/reports/apidocs` as browsable HTML.
+
 ## Folder structure overview
 
 The code can be found in `/src/main/java/org/dd2480`, with resources in `/src/main/resources`, and tests in `/src/test/java`.
