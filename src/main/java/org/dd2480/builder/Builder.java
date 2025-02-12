@@ -174,7 +174,12 @@ public class Builder {
      */
     public BuildResult getResult(String commitHash) {
         try {
-            FileInputStream stream = new FileInputStream(commitHash + ".dat");
+            File directory = new File("buildResults");
+            if (!directory.exists()) {
+                return null;
+            }
+            File file = new File(directory, commitHash + ".dat");
+            FileInputStream stream = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(stream);
             BuildResult result = (BuildResult) in.readObject();
             in.close();
