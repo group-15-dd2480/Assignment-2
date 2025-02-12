@@ -43,7 +43,7 @@ public class ListBuildsHandler implements Handler {
             // Sorts the builds so that the most recent build comes first
             builds.sort((b1, b2) -> b2.endTime.compareTo(b1.endTime));
 
-            var buildMaps= new ArrayList<Map<String,Object>>();
+            var buildMaps = new ArrayList<Map<String, Object>>();
             for (var build : builds) {
                 buildMaps.add(getBuildMap(build));
             }
@@ -57,7 +57,8 @@ public class ListBuildsHandler implements Handler {
         var map = new HashMap<String, Object>();
 
         // Fills in variables present in /templates/buildInfo.ftl
-        map.put("repository", build.repositoryOwner + "/" + build.repositoryName);
+        map.put("owner", build.repositoryOwner);
+        map.put("repository", build.repositoryName);
         map.put("hash", build.commitHash);
         map.put("status", build.status.toString());
         switch (build.status) {
@@ -70,7 +71,7 @@ public class ListBuildsHandler implements Handler {
 
         // Format time to look presentable before putting it in the map
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        ZonedDateTime zonedDateTime = build.endTime.atZone(ZoneId.systemDefault());
+        ZonedDateTime zonedDateTime = build.startTime.atZone(ZoneId.systemDefault());
         String formattedDateTime = zonedDateTime.format(formatter);
         map.put("date", formattedDateTime);
 

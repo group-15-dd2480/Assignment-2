@@ -36,7 +36,7 @@ class ListBuildsEndpointTest {
             assertEquals(200, response.code(), "Incorrect response code");
 
             // Check that the content of the file contains specific information
-            assertEquals(true, response.body().string().contains("Number of builds: 0"), "Incorrect build count");
+            assertEquals(true, response.body().string().contains("Builds available: 0"), "Incorrect build count");
         });
     }
 
@@ -65,7 +65,7 @@ class ListBuildsEndpointTest {
 
             // Check that the content of the file contains specific information
             assertEquals(true, body.contains("ABC123"), "Commit info not present on page");
-            assertEquals(true, body.contains("Number of builds: 1"), "Incorrect build count");
+            assertEquals(true, body.contains("Builds available: 1"), "Incorrect build count");
         });
     }
 
@@ -99,7 +99,7 @@ class ListBuildsEndpointTest {
             // Check that the content of the file contains specific information
             assertEquals(true, body.contains("ABC123"), "Commit info not present on page");
             assertEquals(true, body.contains("XYZ789"), "Commit info not present on page");
-            assertEquals(true, body.contains("Number of builds: 2"), "Incorrect build count");
+            assertEquals(true, body.contains("Builds available: 2"), "Incorrect build count");
         });
     }
 }
