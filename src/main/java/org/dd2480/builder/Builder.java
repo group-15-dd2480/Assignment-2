@@ -23,9 +23,9 @@ public class Builder {
      * 
      * @param commit The commit object representing the version of the project to
      *               build.
-     *
+     * @return The result of the build process.
      */
-    public void buildProject(Commit commit) {
+    public BuildResult buildProject(Commit commit) {
         Instant startTime = Instant.now();
 
         // First fetch project files
@@ -35,7 +35,7 @@ public class Builder {
             BuildResult result = new BuildResult(commit, BuildStatus.ERROR, List.of("Failed to fetch project files"),
                     startTime, Instant.now());
             saveResult(result);
-            return;
+            return result;
         }
 
         // Run maven test and package
@@ -61,6 +61,8 @@ public class Builder {
         // Save the result
         BuildResult result = new BuildResult(commit, status, allLogs, startTime, endTime);
         saveResult(result);
+
+        return result;
     }
 
     /**
@@ -85,6 +87,9 @@ public class Builder {
 
             pb.directory(new File(workingDir));
             pb.redirectErrorStream(true);
+
+            pb.environment().remove("GITHUB_WEBHOOK_SECRET");
+            pb.environment().remove("GITHUB_TOKEN");
 
             Process process = pb.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
