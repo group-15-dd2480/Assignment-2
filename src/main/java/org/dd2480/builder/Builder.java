@@ -12,12 +12,17 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that handles the build process for a given project repository.
+ */
 public class Builder {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(Builder.class);
 
     /**
-     * Build a project from the repository on a specific commit.
-     * @param commit A commit object
+     * Build and tests a project from the repository on a specific commit.
+     * 
+     * @param commit The commit object representing the version of the project to
+     *               build.
      *
      */
     public void buildProject(Commit commit) {
@@ -27,7 +32,8 @@ public class Builder {
         String projectPath = fetchProjectFiles(commit);
         if (projectPath == null) {
             log.info("Failed to fetch the project files for commit: " + commit.hash);
-            BuildResult result = new BuildResult(commit, BuildStatus.ERROR, List.of("Failed to fetch project files"), startTime, Instant.now());
+            BuildResult result = new BuildResult(commit, BuildStatus.ERROR, List.of("Failed to fetch project files"),
+                    startTime, Instant.now());
             saveResult(result);
             return;
         }
@@ -57,7 +63,15 @@ public class Builder {
         saveResult(result);
     }
 
-    
+    /**
+     * Executes a shell command within a specified working directory.
+     *
+     * @param command    The shell command to execute.
+     * @param workingDir The directory where the command should be run.
+     * @param output     A list to store command output (stdout and stderr).
+     * @return {@code true} if the command executed successfully, {@code false}
+     *         otherwise
+     */
     public boolean runCommand(String command, String workingDir, List<String> output) {
         try {
             ProcessBuilder pb = new ProcessBuilder();
@@ -93,9 +107,9 @@ public class Builder {
      * Fetch project files from a remote repository for a specific branch and
      * commit. Files are put in a temporary folder and named after the commit hash.
      *
-     * @param commit A commit object
+     * @param commit The commit object containing repository details.
      * @return The absolute path for the project files, or an empty string if
-     *         something went wrong
+     *         something went wrong.
      */
     public String fetchProjectFiles(Commit commit) {
 
@@ -128,7 +142,8 @@ public class Builder {
 
     /**
      * Save the build result so that it can be accessed at a later date.
-     * @param result the BuildResult object from buildProject
+     * 
+     * @param result The BuildResult object from buildProject
      *
      */
     public void saveResult(BuildResult result) {
@@ -139,7 +154,7 @@ public class Builder {
         }
         File file = new File(directory, result.commitHash + ".dat");
         try (FileOutputStream stream = new FileOutputStream(file);
-             ObjectOutputStream out = new ObjectOutputStream(stream)) {
+                ObjectOutputStream out = new ObjectOutputStream(stream)) {
             out.writeObject(result);
             out.flush();
             out.close();
@@ -149,8 +164,10 @@ public class Builder {
             log.error("Failed to save build result: " + e.getMessage(), e);
         }
     }
+
     /**
      * Get the build result for a specific commit.
+     * 
      * @param commitHash a commit hash
      *
      * @return the result of the build
@@ -170,11 +187,18 @@ public class Builder {
             return null;
         }
     }
-    public List<BuildResult> listAllBuilds(){
+
+    /**
+     * Retrieves a list of all build results.
+     * 
+     * @return A list of all build results.
+     */
+    public List<BuildResult> listAllBuilds() {
         List<BuildResult> results = new ArrayList<>();
         File directory = new File("buildResults");
         File[] files = directory.listFiles((dir, name) -> name.endsWith(".dat"));
-        if (files == null) return results;
+        if (files == null)
+            return results;
         // Deserialize each file
         for (File file : files) {
             try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {

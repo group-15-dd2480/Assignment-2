@@ -15,7 +15,11 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
 /**
- * Handler for list builds page.
+ * Handles requests for listing all builds in the system.
+ * 
+ * This handler retrieves all build results from the builder, sorts them by
+ * completion time (most recent first), and renders them using the
+ * `listBuilds.ftl` template.
  */
 public class ListBuildsHandler implements Handler {
 

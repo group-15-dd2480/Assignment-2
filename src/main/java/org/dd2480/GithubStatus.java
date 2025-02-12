@@ -13,6 +13,11 @@ import org.slf4j.Logger;
 
 import org.dd2480.builder.BuildStatus;
 
+/**
+ * Handles updating the status of a commit on GitHub using the GitHub Status
+ * API.
+ * 
+ */
 public class GithubStatus {
 
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(GithubStatus.class);
@@ -28,6 +33,7 @@ public class GithubStatus {
      * @throws IOException           If an error occurs during the API request.
      * @throws IllegalStateException If the GITHUB_TOKEN environment variable is
      *                               missing.
+     * @throws RuntimeException      If the API request fails.
      */
     public static void setCommitStatus(Commit commit, BuildStatus status, String description, String targetUrl)
             throws IOException {

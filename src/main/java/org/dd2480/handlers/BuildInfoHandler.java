@@ -13,7 +13,11 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
 /**
- * Handler for list builds page.
+ * Handles requests for retrieving and displaying detailed information
+ * about a specific build.
+ * 
+ * This handler fetches build details using the commit hash, formats relevant
+ * metadata, and renders the information using the `buildInfo.ftl` template.
  */
 public class BuildInfoHandler implements Handler {
 

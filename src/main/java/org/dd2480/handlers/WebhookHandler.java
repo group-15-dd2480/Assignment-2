@@ -75,21 +75,11 @@ public class WebhookHandler implements Handler {
         }
     }
 
-    /**
-     * Handle a ping event.
-     * 
-     * @param ctx The Javalin context for the request
-     */
     private void handlePing(Context ctx) {
         ctx.result("pong");
         ctx.status(200);
     }
 
-    /**
-     * Handle a push event.
-     * 
-     * @param ctx The Javalin context for the request
-     */
     private void handlePush(Context ctx) {
         // TODO: Handle push event properly once build system is implemented
         ctx.result("push");
