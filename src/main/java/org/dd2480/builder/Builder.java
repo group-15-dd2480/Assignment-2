@@ -74,7 +74,15 @@ public class Builder {
      */
     public boolean runCommand(String command, String workingDir, List<String> output) {
         try {
-            ProcessBuilder pb = new ProcessBuilder(command.split(" "));
+            ProcessBuilder pb = new ProcessBuilder();
+
+            // Fix OS dependencies
+            if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                pb.command("cmd.exe", "/c", command);
+            } else {
+                pb.command("sh", "-c", command);
+            }
+
             pb.directory(new File(workingDir));
             pb.redirectErrorStream(true);
 
