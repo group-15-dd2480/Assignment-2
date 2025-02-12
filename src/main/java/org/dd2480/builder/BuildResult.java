@@ -22,6 +22,16 @@ public class BuildResult implements Serializable {
     public Instant startTime;
     public Instant endTime;
 
+    /**
+     * Constructor for a BuildResult object.
+     * 
+     * @param commit
+     * @param status
+     * @param logs
+     * @param startTime
+     * @param endTime
+     */
+
     public BuildResult(Commit commit, BuildStatus status, List<String> logs, Instant startTime, Instant endTime) {
         this.repositoryOwner = commit.repositoryOwner;
         this.repositoryName = commit.repositoryName;

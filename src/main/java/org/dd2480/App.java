@@ -20,6 +20,12 @@ public class App {
 
     public Builder builder;
 
+    /**
+     * Creates a new App instance with default settings.
+     *
+     * @param bindIp The IP address to bind the server to.
+     * @param port   The port number to bind the server to.
+     */
     public App(String bindIp, int port) {
         this("localhost", 8080, new Builder());
     }
@@ -27,8 +33,9 @@ public class App {
     /**
      * Create a new instance of the application.
      * 
-     * @param bindIp The ip to bind the server to.
-     * @param port   The port to bind the server to.
+     * @param bindIp  The ip address to bind the server to.
+     * @param port    The port number to bind the server to.
+     * @param builder A builder object for managing build-related routes.
      */
     public App(String bindIp, int port, Builder builder) {
         this.bindIp = bindIp;
@@ -51,9 +58,6 @@ public class App {
         this.buildRoutes();
     }
 
-    /**
-     * Add all routes for the application here.
-     */
     private void buildRoutes() {
         this.app.get("/", new RootHandler());
         this.app.post("/webhook", new WebhookHandler());
@@ -62,7 +66,7 @@ public class App {
     }
 
     /**
-     * Start the http server and block.
+     * Starts the HTTP server and blocks execution until stopped.
      */
     public void start() {
         this.app.start(this.bindIp, this.port);

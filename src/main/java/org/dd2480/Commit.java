@@ -11,6 +11,14 @@ public class Commit {
     public final String message;
     public final String branch;
 
+    /**
+     * Constructor for a Commit object.
+     * @param repositoryOwner
+     * @param repositoryName
+     * @param commitHash
+     * @param commitMessage
+     * @param branch
+     */
     public Commit(String repositoryOwner, String repositoryName, String commitHash, String commitMessage, String branch) {
         this.repositoryOwner = repositoryOwner;
         this.repositoryName = repositoryName;
