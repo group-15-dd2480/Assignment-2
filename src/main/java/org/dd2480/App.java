@@ -60,7 +60,7 @@ public class App {
 
     private void buildRoutes() {
         this.app.get("/", new RootHandler());
-        this.app.post("/webhook", new WebhookHandler());
+        this.app.post("/webhook", new WebhookHandler(this.builder));
         this.app.get("/builds", new ListBuildsHandler(this.builder));
         this.app.get("/builds/{commitHash}", new BuildInfoHandler(this.builder));
     }

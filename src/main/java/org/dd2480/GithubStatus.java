@@ -9,14 +9,14 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import org.slf4j.Logger;
 
 import org.dd2480.builder.BuildStatus;
+import org.slf4j.Logger;
 
 /**
  * Handles updating the status of a commit on GitHub using the GitHub Status
  * API.
- * 
+ *
  */
 public class GithubStatus {
 
@@ -26,15 +26,15 @@ public class GithubStatus {
     /**
      * Updates the status of a commit using the GitHub Status API.
      *
-     * @param commit      Commit object containing relevant information.
-     * @param status      The state of the status (success, failure, error, or
-     *                    pending).
+     * @param commit Commit object containing relevant information.
+     * @param status The state of the status (success, failure, error, or
+     * pending).
      * @param description A short description of the status.
-     * @param targetUrl   A link for more details.
-     * @throws IOException           If an error occurs during the API request.
+     * @param targetUrl A link for more details.
+     * @throws IOException If an error occurs during the API request.
      * @throws IllegalStateException If the GITHUB_TOKEN environment variable is
-     *                               missing.
-     * @throws RuntimeException      If the API request fails.
+     * missing.
+     * @throws RuntimeException If the API request fails.
      */
     public void setCommitStatus(Commit commit, BuildStatus status, String description, String targetUrl)
             throws IOException {
@@ -59,7 +59,7 @@ public class GithubStatus {
 
         // Create the status to be sent
         String commitStatus = String.format(
-                "{ \"state\": \"%s\", \"description\": \"%s\", \"target_url\": \"%s\" }",
+                "{ \"state\": \"%s\", \"description\": \"%s\", \"target_url\": \"%s\", \"context\": \"ci/dd2480\" }",
                 status.name().toLowerCase(), // Convert Enum to lowercase string
                 description.replace("\"", "\\\""), // Remove double quotes
                 targetUrl);
@@ -100,7 +100,6 @@ public class GithubStatus {
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
                 }
-                logger.info("GitHub API Success Response: " + response.toString());
             }
         }
     }
