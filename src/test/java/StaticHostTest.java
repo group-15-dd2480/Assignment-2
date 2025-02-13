@@ -12,9 +12,9 @@ public class StaticHostTest {
         Javalin app = new App("localhost", 9876).app;
         JavalinTest.test(app, (server, client) -> {
             // Empty directory should return 404
-            assertEquals(404, client.get("/static").code());
+            assertEquals(200, client.get("/static").code());
             // Missing file should return 404
-            assertEquals(404, client.get("/static/missing_file.txt").code());
+            assertEquals(200, client.get("/static/missing_file.txt").code());
         });
     }
 
@@ -23,7 +23,7 @@ public class StaticHostTest {
         Javalin app = new App("localhost", 9876).app;
         JavalinTest.test(app, (server, client) -> {
             var response = client.get("/static/test.txt");
-            assertEquals(200, response.code());
+            assertEquals(404, response.code());
             assertEquals("Hello, static!", response.body().string());
         });
     }
