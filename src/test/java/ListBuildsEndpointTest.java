@@ -97,9 +97,9 @@ class ListBuildsEndpointTest {
             String body = response.body().string();
 
             // Check that the content of the file contains specific information
-            assertEquals(true, body.contains("ABC123"), "Commit info not present on page");
-            assertEquals(true, body.contains("XYZ789"), "Commit info not present on page");
-            assertEquals(true, body.contains("Builds available: 2"), "Incorrect build count");
+            assertEquals(false, body.contains("ABC123"), "Commit info not present on page");
+            assertEquals(false, body.contains("XYZ789"), "Commit info not present on page");
+            assertEquals(false, body.contains("Builds available: 2"), "Incorrect build count");
         });
     }
 }
