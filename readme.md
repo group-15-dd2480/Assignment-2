@@ -16,6 +16,9 @@ Maven version: 3.9.9
 
 Java version: 21.0.2
 
+# Public Builds URL
+https://athena.tail0fb17.ts.net/builds
+
 ## Javadocs
 
 To generate javadocs, run `mvn javadoc:javadoc`. The results can be found in `target/reports/apidocs` as browsable HTML.
