@@ -4,6 +4,9 @@ The purpose of the project is creating a small continous integration (CI) server
 
 A webhook is configured to send push event notifications to our server, which triggers a build of the associated repository. The code is checked using `mvn test` and `mvn package`, the results are reported using the Github Status API.
 
+## Public Builds URL
+https://athena.tail0fb17.ts.net/builds
+
 ## How to Build and Test
 
 The code is written in Java and uses Maven for building, for testing we use JUnit5 and Mockito.
